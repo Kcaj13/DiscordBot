@@ -15,22 +15,6 @@ const AppDAO = require('./db/dao');
 const dao = new AppDAO('./db/database.sqlite3');
 const lbRepo = new LeaderboardRepository(dao);
 
-//Current Error:
-// node:internal/process/promises:279
-//             triggerUncaughtException(err, true /* fromPromise */);
-//             ^
-
-// Error: read ECONNRESET
-//     at TLSWrap.onStreamRead (node:internal/stream_base_commons:217:20) {
-//   errno: -4077,
-//   code: 'ECONNRESET',
-//   syscall: 'read'
-// }
-
-//Free Hosting:
-//-https://railway.app/
-//Or Oracle?
-
 const client = new Client({
 	partials: [
 		Partials.Message, // for message
