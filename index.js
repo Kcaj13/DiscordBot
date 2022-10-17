@@ -15,6 +15,22 @@ const AppDAO = require('./db/dao');
 const dao = new AppDAO('./db/database.sqlite3');
 const lbRepo = new LeaderboardRepository(dao);
 
+//Current Error:
+// node:internal/process/promises:279
+//             triggerUncaughtException(err, true /* fromPromise */);
+//             ^
+
+// Error: read ECONNRESET
+//     at TLSWrap.onStreamRead (node:internal/stream_base_commons:217:20) {
+//   errno: -4077,
+//   code: 'ECONNRESET',
+//   syscall: 'read'
+// }
+
+//Free Hosting:
+//-https://railway.app/
+//Or Oracle?
+
 const client = new Client({
 	partials: [
 		Partials.Message, // for message
@@ -101,11 +117,11 @@ const askQuestion = () => {
 	do {
 		randNumber = Math.floor(Math.random() * questions.length);
 		channel.send('**Question:** ' + questions[randNumber]);
-	} while(answers[randNumber] ==='undefined');
+	} while(questions[randNumber].startsWith('<'));
 
 	const filter = m => String(m.content).toLowerCase() === String(answers[randNumber]).toLowerCase();
 
-	channel.awaitMessages({ filter, max: 1, time: 300_000, errors: ['time'] })
+	channel.awaitMessages({ filter, max: 1, time: 60_000, errors: ['time'] })
 		.then(collected => {
 		    channel.send(`${collected.first().author} got the correct answer and earned 1 point!`);
 			addPoint(collected.first().author);
